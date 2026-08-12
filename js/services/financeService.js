@@ -1,0 +1,6 @@
+import {subtractMoney} from '../utils/currency.js';
+import {dateKey,localDate,addDays,dayName} from '../utils/dates.js';
+export const byWeek=(items,start)=>{const end=addDays(start,7);return items.filter(x=>{const d=localDate(x.date);return d>=start&&d<end})};
+export function totals(items){return items.reduce((a,x)=>{a[x.type]+=x.amount;return a},{income:0,expense:0})}
+export function summary(items){const t=totals(items),expenses=items.filter(x=>x.type==='expense'),incomes=items.filter(x=>x.type==='income');const groups=expenses.reduce((a,x)=>(a[x.categoryId]=(a[x.categoryId]||0)+x.amount,a),{});const largestCategory=Object.entries(groups).sort((a,b)=>b[1]-a[1])[0];const daily=expenses.reduce((a,x)=>(a[dateKey(x.date)]=(a[dateKey(x.date)]||0)+x.amount,a),{});const largestDay=Object.entries(daily).sort((a,b)=>b[1]-a[1])[0];return {...t,balance:subtractMoney(t.income,t.expense),count:items.length,largestExpense:expenses.sort((a,b)=>b.amount-a.amount)[0],largestIncome:incomes.sort((a,b)=>b.amount-a.amount)[0],largestCategory,largestDay:largestDay&&{name:dayName(largestDay[0]),amount:largestDay[1]},percent:t.income?Math.round(t.expense/t.income*1000)/10:0,average:Math.round(t.expense/7)}}
+export function daily(items,start){return Array.from({length:7},(_,i)=>totals(items.filter(x=>dateKey(x.date)===dateKey(addDays(start,i))))) }

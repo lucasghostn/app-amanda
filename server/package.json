@@ -1,0 +1,25 @@
+{
+  "name": "organiza-api",
+  "version": "1.2.0",
+  "description": "API for OrganizaFinanças - Postgres + Express (with auth)",
+  "homepage": "https://lucasghostn.github.io/app-amanda/",
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js",
+    "dev": "nodemon start.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.8.0",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
+    "pg": "^8.10.0",
+    "serverless-http": "^2.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

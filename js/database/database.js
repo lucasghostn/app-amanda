@@ -1,0 +1,7 @@
+const DB_NAME='organiza-financas',VERSION=1,STORES=['transactions','categories','settings','goals'];
+let database;
+export function openDatabase(){if(database)return Promise.resolve(database);return new Promise((resolve,reject)=>{const request=indexedDB.open(DB_NAME,VERSION);request.onupgradeneeded=()=>{const db=request.result;STORES.forEach(name=>{if(!db.objectStoreNames.contains(name))db.createObjectStore(name,{keyPath:'id'})})};request.onsuccess=()=>{database=request.result;resolve(database)};request.onerror=()=>reject(request.error)})}
+export async function getAll(store){const db=await openDatabase();return new Promise((resolve,reject)=>{const r=db.transaction(store,'readonly').objectStore(store).getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+export async function put(store,value){const db=await openDatabase();return new Promise((resolve,reject)=>{const r=db.transaction(store,'readwrite').objectStore(store).put(value);r.onsuccess=()=>resolve(value);r.onerror=()=>reject(r.error)})}
+export async function remove(store,id){const db=await openDatabase();return new Promise((resolve,reject)=>{const r=db.transaction(store,'readwrite').objectStore(store).delete(id);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)})}
+export async function clear(store){const db=await openDatabase();return new Promise((resolve,reject)=>{const r=db.transaction(store,'readwrite').objectStore(store).clear();r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)})}

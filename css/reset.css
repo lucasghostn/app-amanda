@@ -1,5 +1,0 @@
-*, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-body, h1, h2, p { margin: 0; }
-button { font: inherit; }
-button, a { -webkit-tap-highlight-color: transparent; }
